@@ -20,8 +20,19 @@ public class Ejecutable {
         MongoCollection collection = mongoDatabase.getCollection("test");
 
         System.out.println("Esta conectada la base de datos.");
-
-        Document found = (Document) collection.find( new Document( "name", "Roger" ) ).first();
-
+        //Encontrar un documento
+        Document search = new Document( "name", "Roger" );
+        Document found = (Document) collection.find( search ).first();
+        if ( found != null ) {
+            //Operar el documento encontrado
+            System.out.println("Encontrado usuario");
+            Bson updatedValue = new Document( "age", 25 );
+            Bson updatedOperation = new Document( "$set", updatedValue );
+            collection.updateOne( found, updatedOperation );
+            System.out.println("El usuario fue actualizado.");
+        }
+        else {
+            System.out.println("No es posible encontrar el usuario.");
+        }
     }
 }
